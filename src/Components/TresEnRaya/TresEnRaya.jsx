@@ -34,7 +34,7 @@ const TresEnRaya = () => {
         for (let combination of winningCombinations) {
             const [a, b, c] = combination;
             if (boxes[a] && boxes[a] === boxes[b] && boxes[a] === boxes[c]) {
-                won(boxes[a]); // Si hay un ganador, llamar a la función won
+                won(boxes[a], combination); // Si hay un ganador, llamar a la función won
                 return;
             }
         }
@@ -46,26 +46,15 @@ const TresEnRaya = () => {
         }
     };
 
-    const won = (winner) => {
-        setLock(true);
+    // Función para manejar el caso en que hay un ganador
+    const won = (winner, combination) => {
+        setLock(true); // Bloquear el juego
         setWinnerMessage(`Felicidades: <img src=${winner === "x" ? cross_icon : circle_icon}>`);
-    
+
         // Agregar clase a las cajas ganadoras
-        const winningCombinations = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Filas
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columnas
-            [0, 4, 8], [2, 4, 6]             // Diagonales
-        ];
-    
-        for (let combination of winningCombinations) {
-            const [a, b, c] = combination;
-            if (boxes[a] && boxes[a] === boxes[b] && boxes[a] === boxes[c]) {
-                document.getElementById(`box-${a}`).classList.add('winner-box');
-                document.getElementById(`box-${b}`).classList.add('winner-box');
-                document.getElementById(`box-${c}`).classList.add('winner-box');
-                break;
-            }
-        }
+        combination.forEach((index) => {
+            document.getElementById(`box-${index}`).classList.add('winner-box');
+        });
     };
 
     // Función para reiniciar el juego
@@ -74,6 +63,11 @@ const TresEnRaya = () => {
         setBoxes(Array(9).fill("")); // Reiniciar las cajas
         setWinnerMessage(""); // Reiniciar el mensaje del ganador
         setCount(0); // Reiniciar el contador de turnos
+
+        // Remover la clase de las cajas ganadoras
+        for (let i = 0; i < 9; i++) {
+            document.getElementById(`box-${i}`).classList.remove('winner-box');
+        }
     };
 
     return (
@@ -84,35 +78,35 @@ const TresEnRaya = () => {
             {/* Tablero de juego */}
             <div className="board">
                 <div className="row1">
-                    <div className="boxes" id={`box-0`} onClick={() => toggle(0)}>
+                    <div id="box-0" className="boxes" onClick={() => toggle(0)}>
                         {boxes[0] && <img src={boxes[0] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
-                    <div className="boxes" id={`box-1`} onClick={() => toggle(1)}>
+                    <div id="box-1" className="boxes" onClick={() => toggle(1)}>
                         {boxes[1] && <img src={boxes[1] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
-                    <div className="boxes" id={`box-2`} onClick={() => toggle(2)}>
+                    <div id="box-2" className="boxes" onClick={() => toggle(2)}>
                         {boxes[2] && <img src={boxes[2] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
                 </div>
                 <div className="row2">
-                    <div className="boxes" id={`box-3`} onClick={() => toggle(3)}>
+                    <div id="box-3" className="boxes" onClick={() => toggle(3)}>
                         {boxes[3] && <img src={boxes[3] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
-                    <div className="boxes" id={`box-4`} onClick={() => toggle(4)}>
+                    <div id="box-4" className="boxes" onClick={() => toggle(4)}>
                         {boxes[4] && <img src={boxes[4] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
-                    <div className="boxes" id={`box-5`} onClick={() => toggle(5)}>
+                    <div id="box-5" className="boxes" onClick={() => toggle(5)}>
                         {boxes[5] && <img src={boxes[5] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
                 </div>
                 <div className="row3">
-                    <div className="boxes" id={`box-6`} onClick={() => toggle(6)}>
+                    <div id="box-6" className="boxes" onClick={() => toggle(6)}>
                         {boxes[6] && <img src={boxes[6] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
-                    <div className="boxes" id={`box-7`} onClick={() => toggle(7)}>
+                    <div id="box-7" className="boxes" onClick={() => toggle(7)}>
                         {boxes[7] && <img src={boxes[7] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
-                    <div className="boxes" id={`box-8`} onClick={() => toggle(8)}>
+                    <div id="box-8" className="boxes" onClick={() => toggle(8)}>
                         {boxes[8] && <img src={boxes[8] === "x" ? cross_icon : circle_icon} alt="icon" />}
                     </div>
                 </div>
